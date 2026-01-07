@@ -927,10 +927,11 @@ async def auto_filter(client, msg, spoll=False):
              InlineKeyboardButton(text="Check PM", url=f"https://t.me/{temp.U_NAME}")]
         )
 
-    btn.insert(0, [
-        InlineKeyboardButton(f🎬 Movie', 'minfo'),
-        InlineKeyboardButton(f'Series 📽️', 'sinfo')
+        btn.insert(0, [
+        InlineKeyboardButton('🎬 Movie', callback_data='minfo'),
+        InlineKeyboardButton('Series 📽️', callback_data='sinfo')
     ])
+
     btn.insert(0, [
         InlineKeyboardButton(text="ミ★ TECH MASTERZ ★彡", callback_data="techmasterz"),
     ])

@@ -11,7 +11,8 @@ from pyrogram import types
 from datetime import datetime
 from pytz import timezone
 from pyrogram.errors import BadRequest, Unauthorized
-from plugins import web_server
+# Yahan humne server_run ko sahi se import kiya hai
+from plugins.web_server import server_run
 from aiohttp import web
 
 # Get logging configurations
@@ -21,6 +22,7 @@ logging.getLogger("pyrogram").setLevel(logging.ERROR)
 logging.getLogger("cinemagoer").setLevel(logging.ERROR)
 LOGGER = logging.getLogger(__name__)
 TIMEZONE = (os.environ.get("TIMEZONE", "Asia/Kolkata"))
+
 class Bot(Client):
 
     def __init__(self):
@@ -49,12 +51,16 @@ class Bot(Client):
         curr = datetime.now(timezone(TIMEZONE))
         date = curr.strftime('%d %B, %Y')
         time = curr.strftime('%I:%M:%S %p')
-        app = web.AppRunner(await web_server())
+        
+        # Web Server Setup for Render
+        app = web.AppRunner(await server_run())
         await app.setup()
         bind_address = "0.0.0.0"
         await web.TCPSite(app, bind_address, PORT).start()
+        
         logging.info(f"{me.first_name} with for Pyrogram v{__version__} (Layer {layer}) started on {me.username}.")
         logging.info(LOG_STR)
+        
         if LOG_CHANNEL:
             try:
                 await self.send_message(LOG_CHANNEL, text=f"<b>{me.mention} Iꜱ Rᴇsᴛᴀʀᴛᴇᴅ !!\n\n📅 Dᴀᴛᴇ : <code>{date}</code>\n⏰ Tɪᴍᴇ : <code>{time}</code>\n🌐 Tɪᴍᴇᴢᴏɴᴇ : <code>{TIMEZONE}</code>\n\n🉐 Vᴇʀsɪᴏɴ : <code>v{__version__} (Layer {layer})</code></b>")                      
@@ -78,8 +84,6 @@ class Bot(Client):
             for message in messages:
                 yield message
                 current += 1
-
-
         
 app = Bot()
 app.run()

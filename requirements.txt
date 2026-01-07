@@ -16,3 +16,5 @@ ffmpeg-python
 ytthumb
 yt-dlp
 cinemagoer
+pytz
+python-dotenv
